@@ -7,6 +7,8 @@ defmodule CrosswordsApiWeb.Router do
 
   scope "/api", CrosswordsApiWeb do
     pipe_through :api
+
+    get "/crosswords", CrosswordsController, :index
   end
 
   # Enable LiveDashboard in development
