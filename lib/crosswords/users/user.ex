@@ -4,13 +4,13 @@ defmodule Crosswords.Users.User do
 
   schema "users" do
     field :name, :string
-    field :email, :string,
+    field :email, :string
     field :password_hash, :string
 
     timestamps()
   end
 
-  def changeset(user, params) do
+  def changeset(user \\ %__MODULE__{}, params) do
     user
     |> cast(params, [:name, :email, :password_hash])
     |> validate_required([:name, :email, :password_hash])
