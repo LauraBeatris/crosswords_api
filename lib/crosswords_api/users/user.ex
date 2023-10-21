@@ -2,11 +2,14 @@ defmodule CrosswordsApi.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_params [:name, :email, :password_hash]
+  alias Ecto.Changeset
+
+  @required_params [:name, :password, :email]
 
   schema "users" do
     field :name, :string
     field :email, :string
+    field :password, :string, virtual: true
     field :password_hash, :string
 
     timestamps()
@@ -14,10 +17,17 @@ defmodule CrosswordsApi.Users.User do
 
   def changeset(user \\ %__MODULE__{}, params) do
     user
-    |> cast(params, [:name, :email, :password_hash])
+    |> cast(params, @required_params)
     |> validate_required(@required_params)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:name, min: 3)
     |> unique_constraint(:email)
+    |> add_password_hash()
   end
+
+  defp add_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, Argon2.add_hash(password))
+  end
+
+  defp add_password_hash(changeset), do: changeset
 end
