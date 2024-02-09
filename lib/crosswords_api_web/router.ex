@@ -9,6 +9,7 @@ defmodule CrosswordsApiWeb.Router do
     pipe_through :api
 
     get "/crosswords", CrosswordsController, :index
+    resources "/users", UsersController, only: [:create, :update, :delete, :show]
   end
 
   # Enable LiveDashboard in development
