@@ -6,6 +6,7 @@ defmodule CrosswordsApi.Users.User do
 
   @required_params [:name, :password, :email]
 
+  @derive {Jason.Encoder, except: [:__meta__, :password_hash, :password]}
   schema "users" do
     field :name, :string
     field :email, :string
