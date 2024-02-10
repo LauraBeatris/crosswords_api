@@ -14,4 +14,11 @@ defmodule CrosswordsApiWeb.UsersController do
     |> put_status(:created)
     |> render(:create, user: user)
   end
+
+  defp handle_response({:error, changeset} = _error, conn) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(json: CrosswordsApiWeb.ErrorJSON)
+    |> render(:error, changeset: changeset)
+  end
 end
