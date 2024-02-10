@@ -71,5 +71,80 @@ defmodule CrosswordsApiWeb.UsersControllerTest do
 
       assert response == expected_response
     end
+
+    test "with an user that doesn't exist, returns error", %{conn: conn} do
+      response =
+        conn
+        |> delete(~p"/api/users/1")
+        |> json_response(:not_found)
+
+      expected_response = %{
+        "message" => "Entity not found",
+        "status" => "not_found"
+      }
+
+      assert response == expected_response
+    end
+  end
+
+  describe "update/2" do
+    test "successfully updates a user", %{conn: conn} do
+      %User{id: id, email: email, inserted_at: inserted_at, updated_at: updated_at} =
+        insert(:user)
+
+      response =
+        conn
+        |> put(~p"/api/users/#{id}", %{
+          name: "Foo Bar Updated"
+        })
+        |> json_response(:ok)
+
+      expected_response = %{
+        "data" => %{
+          "email" => email,
+          "id" => id,
+          "inserted_at" => NaiveDateTime.to_iso8601(inserted_at),
+          "name" => "Foo Bar Updated",
+          "updated_at" => NaiveDateTime.to_iso8601(updated_at)
+        },
+        "message" => "User updated successfully."
+      }
+
+      assert response == expected_response
+    end
+
+    test "with an user that doesn't exist, returns error", %{conn: conn} do
+      response =
+        conn
+        |> put(~p"/api/users/1")
+        |> json_response(:not_found)
+
+      expected_response = %{
+        "message" => "Entity not found",
+        "status" => "not_found"
+      }
+
+      assert response == expected_response
+    end
+
+    test "with invalid params, returns error", %{conn: conn} do
+      %User{id: id} =
+        insert(:user)
+
+      response =
+        conn
+        |> put(~p"/api/users/#{id}", %{
+          name: nil
+        })
+        |> json_response(:bad_request)
+
+      expected_response = %{
+        "errors" => %{
+          "name" => ["can't be blank"]
+        }
+      }
+
+      assert response == expected_response
+    end
   end
 end
