@@ -5,8 +5,7 @@ defmodule CrosswordsApi.Repo.Migrations.AddUsersTable do
     create table("users") do
       add :name, :string, null: false
       add :password_hash, :string, null: false
-      add :email, :string, null: false
-
+      add :email, :string, null: false, unique: true
       timestamps()
     end
 
