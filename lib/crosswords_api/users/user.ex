@@ -4,8 +4,6 @@ defmodule CrosswordsApi.Users.User do
 
   alias Ecto.Changeset
 
-  @required_params [:name, :password, :email]
-
   @derive {Jason.Encoder, except: [:__meta__, :password_hash, :password]}
   schema "users" do
     field :name, :string
@@ -16,14 +14,27 @@ defmodule CrosswordsApi.Users.User do
     timestamps()
   end
 
-  def changeset(user \\ %__MODULE__{}, params) do
-    user
-    |> cast(params, @required_params)
-    |> validate_required(@required_params)
-    |> validate_format(:email, ~r/@/)
-    |> validate_length(:name, min: 3)
+  def changeset(params) do
+    %__MODULE__{}
+    |> cast(params, [:name, :password, :email])
+    |> validate([:name, :password, :email])
     |> unique_constraint(:email)
     |> add_password_hash()
+  end
+
+  def changeset(user, params) do
+    user
+    |> cast(params, [:name, :password, :email])
+    |> validate([:name])
+    |> unique_constraint(:email)
+    |> add_password_hash()
+  end
+
+  def validate(changeset, required_fields) do
+    changeset
+    |> validate_required(required_fields)
+    |> validate_format(:email, ~r/@/)
+    |> validate_length(:name, min: 3)
   end
 
   defp add_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do
