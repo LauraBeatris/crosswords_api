@@ -5,8 +5,8 @@ defmodule CrosswordsApi.GitHub.Client do
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Headers, [{"user-agent", "Crosswords API"}]
 
-  def call() do
-    get("/repos/LauraBeatris/starry")
+  def call(name) do
+    get("/users/#{name}")
     |> handle_response
   end
 
@@ -18,7 +18,12 @@ defmodule CrosswordsApi.GitHub.Client do
     {:error, :bad_request}
   end
 
-  defp handle_response({:error, _}) do
+  defp handle_response({:ok, %Tesla.Env{status: 404}}) do
+    {:error, :not_found}
+  end
+
+  defp handle_response({:error, error}) do
+    IO.inspect(error)
     {:error, :internal_server_error}
   end
 end
