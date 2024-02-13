@@ -1,12 +1,12 @@
 defmodule CrosswordsApi.GitHub.Client do
   use Tesla
 
-  plug Tesla.Middleware.BaseUrl, "https://api.github.com"
+  @default_url "https://api.github.com"
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Headers, [{"user-agent", "Crosswords API"}]
 
-  def call(name) do
-    get("/users/#{name}")
+  def call(url \\ @default_url, name) do
+    get("#{url}/users/#{name}")
     |> handle_response
   end
 

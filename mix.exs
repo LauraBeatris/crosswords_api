@@ -43,7 +43,8 @@ defmodule CrosswordsApi.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:argon2_elixir, "~> 4.0"},
       {:ex_machina, "~> 2.7.0", only: :test},
-      {:tesla, "~> 1.4"}
+      {:tesla, "~> 1.4"},
+      {:bypass, "~> 2.1", only: :test}
     ]
   end
 
