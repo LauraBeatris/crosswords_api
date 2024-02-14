@@ -1,18 +1,30 @@
 defmodule CrosswordsApiWeb.UsersControllerTest do
+  import Mox
+
   use CrosswordsApiWeb.ConnCase
 
   alias CrosswordsApi.Users
   alias Users.User
   import CrosswordsApi.Factory
 
+  setup :verify_on_exit!
+
   describe "create/2" do
     test "successfully creates an user", %{conn: conn} do
+      expect(CrosswordsApi.GitHub.ClientMock, :call, fn "FooBar" ->
+        {:ok,
+         %{
+           "login" => "LauraBeatris",
+           "id" => "48022589"
+         }}
+      end)
+
       response =
         conn
         |> post(~p"/api/users", %{
-          name: "Foo Bar",
-          email: "foo@bar.com",
-          password: "foobar"
+          "name" => "Foo Bar",
+          "email" => "foo@bar.com",
+          "password" => "foobar"
         })
         |> json_response(:created)
 
@@ -29,10 +41,18 @@ defmodule CrosswordsApiWeb.UsersControllerTest do
     end
 
     test "with invalid params, returns error", %{conn: conn} do
+      expect(CrosswordsApi.GitHub.ClientMock, :call, fn "" ->
+        {:ok,
+         %{
+           "login" => "LauraBeatris",
+           "id" => "48022589"
+         }}
+      end)
+
       response =
         conn
         |> post(~p"/api/users", %{
-          name: nil
+          "name" => ""
         })
         |> json_response(:bad_request)
 

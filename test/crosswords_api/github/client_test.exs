@@ -14,8 +14,6 @@ defmodule CrosswordsApi.GitHub.ClientTest do
     test "returns a user", %{bypass: bypass} do
       name = "laurabeatris"
 
-      expected_response = "test"
-
       body = ~s({
         "login": "LauraBeatris",
         "id": "48022589"
