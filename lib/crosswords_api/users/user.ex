@@ -1,8 +1,10 @@
 defmodule CrosswordsApi.Users.User do
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Ecto.Changeset
+  alias CrosswordsApi.Scores.Score
 
   @derive {Jason.Encoder, except: [:__meta__, :password_hash, :password]}
   schema "users" do
@@ -10,6 +12,7 @@ defmodule CrosswordsApi.Users.User do
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    has_one :score, Score
 
     timestamps()
   end
