@@ -20,5 +20,6 @@ defmodule CrosswordsApi.Scores.Score do
     |> cast(params, @required_params)
     |> validate_required(@required_params)
     |> check_constraint(:score, name: :score_must_be_positive)
+    |> unique_constraint(:user_id, name: :unique_scores_user_id)
   end
 end
