@@ -7,6 +7,7 @@ defmodule CrosswordsApi.Scores.Score do
 
   @required_params [:score, :user_id]
 
+  @derive {Jason.Encoder, except: [:__meta__, :user]}
   schema "scores" do
     field :score, :decimal
     belongs_to :user, User

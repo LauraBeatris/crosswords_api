@@ -6,7 +6,7 @@ defmodule CrosswordsApi.Users.User do
   alias Ecto.Changeset
   alias CrosswordsApi.Scores.Score
 
-  @derive {Jason.Encoder, except: [:__meta__, :password_hash, :password]}
+  @derive {Jason.Encoder, except: [:__meta__, :password_hash, :password, :score]}
   schema "users" do
     field :name, :string
     field :email, :string
