@@ -5,4 +5,14 @@ defmodule CrosswordsApiWeb.ScoresJSON do
       data: score
     }
   end
+
+  def exchange(%{exchange: exchange}) do
+    %{
+      message: "Exchanged successfully.",
+      data: %{
+        from_score: exchange[:transfer],
+        to_score: exchange[:deposit]
+      }
+    }
+  end
 end

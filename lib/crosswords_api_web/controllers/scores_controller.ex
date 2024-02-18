@@ -13,4 +13,12 @@ defmodule CrosswordsApiWeb.ScoresController do
       |> render(:create, score: score)
     end
   end
+
+  def exchange(conn, params) do
+    with {:ok, exchange} <- Scores.exchange(params) do
+      conn
+      |> put_status(:ok)
+      |> render(:exchange, exchange: exchange)
+    end
+  end
 end

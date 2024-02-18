@@ -11,6 +11,7 @@ defmodule CrosswordsApiWeb.Router do
     get "/crosswords", CrosswordsController, :index
     resources "/users", UsersController, only: [:create, :update, :delete, :show]
     post "/scores", ScoresController, :create
+    post "/scores/exchange", ScoresController, :exchange
   end
 
   # Enable LiveDashboard in development
