@@ -10,7 +10,7 @@ defmodule CrosswordsApi.Users.Authenticate do
 
   defp verify_password(user, password) do
     case Argon2.verify_pass(password, user.password_hash) do
-      true -> {:ok, :valid_password}
+      true -> {:ok, user}
       false -> {:error, :unauthorized}
     end
   end

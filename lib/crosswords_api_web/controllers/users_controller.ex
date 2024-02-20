@@ -1,6 +1,7 @@
 defmodule CrosswordsApiWeb.UsersController do
   use CrosswordsApiWeb, :controller
 
+  alias CrosswordsApiWeb.Token
   alias CrosswordsApi.Users
   alias Users.User
 
@@ -35,6 +36,16 @@ defmodule CrosswordsApiWeb.UsersController do
       conn
       |> put_status(:ok)
       |> render(:delete, user: user)
+    end
+  end
+
+  def authenticate(conn, params) do
+    with {:ok, %User{} = user} <- Users.authenticate(params) do
+      token = Token.sign(user)
+
+      conn
+      |> put_status(:ok)
+      |> render(:authenticate, token: token)
     end
   end
 end

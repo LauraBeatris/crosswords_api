@@ -9,7 +9,10 @@ defmodule CrosswordsApiWeb.Router do
     pipe_through :api
 
     get "/crosswords", CrosswordsController, :index
+
     resources "/users", UsersController, only: [:create, :update, :delete, :show]
+    post "/users/authenticate", UsersController, :authenticate
+
     post "/scores", ScoresController, :create
     post "/scores/exchange", ScoresController, :exchange
   end
