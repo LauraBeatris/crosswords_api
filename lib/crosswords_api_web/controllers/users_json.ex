@@ -15,7 +15,7 @@ defmodule CrosswordsApiWeb.UsersJSON do
   def authenticate(%{token: token}) do
     %{
       message: "User authenticated successfully.",
-      token: token
+      bearer: token
     }
   end
 end

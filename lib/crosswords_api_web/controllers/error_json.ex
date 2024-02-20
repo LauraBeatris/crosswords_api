@@ -10,6 +10,12 @@ defmodule CrosswordsApiWeb.ErrorJSON do
     }
   end
 
+  def error(%{status: :unauthorized}) do
+    %{
+      status: :unauthorized
+    }
+  end
+
   def error(%{message: message}) do
     %{
       message: message

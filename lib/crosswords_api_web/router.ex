@@ -5,13 +5,23 @@ defmodule CrosswordsApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug CrosswordsApiWeb.Plugs.Auth
+  end
+
   scope "/api", CrosswordsApiWeb do
     pipe_through :api
 
     get "/crosswords", CrosswordsController, :index
 
-    resources "/users", UsersController, only: [:create, :update, :delete, :show]
+    resources "/users", UsersController, only: [:create]
     post "/users/authenticate", UsersController, :authenticate
+  end
+
+  scope "/api", CrosswordsApiWeb do
+    pipe_through [:api, :auth]
+
+    resources "/users", UsersController, only: [:update, :delete, :show]
 
     post "/scores", ScoresController, :create
     post "/scores/exchange", ScoresController, :exchange
